@@ -53,16 +53,22 @@ def Experimental_Compton_Continuum(E_electron,E_gammaray, res=0.03):
     return gaussian_filter(continuum,sigma=resolution)
 
 
-    
+
+
+
+
 
 
 
 
 # The gamma-ray energy from the isotope under consideration     
-E_gammaray = 667
+E_gammaray = 662# keV 
+
+# The detector resolution in per cent of the gamma-ray energy 
+detector_resolution = 0.03
 
 # The maximum Compton scattered electron energy 
-E_max_Compton = E_gammaray -  (E_gammaray / (1.0 + 2*(E_gammaray/511)))
+E_max_Compton = E_gammaray -  (E_gammaray / (1.0 + 2.0*(E_gammaray/511.0)))
 
 # The detector energy scale
 E_electron = np.linspace(0,1.2*E_gammaray,500)
@@ -76,7 +82,7 @@ plt.figure(num=None, figsize=(12, 8), dpi=100, facecolor='w', edgecolor='k')
 ax = plt.gca()
 
 # Now find the blurred experimental spectrum 
-simulated_spectrum = 1e31*Experimental_Compton_Continuum(E_electron,E_gammaray)
+simulated_spectrum = 1e31*Experimental_Compton_Continuum(E_electron,E_gammaray,detector_resolution)
 
 # And plot it 
 plt.plot(E_electron,simulated_spectrum,'k-')
@@ -113,5 +119,5 @@ plt.plot(E_electron,(continuum/sum(continuum))*sum(simulated_spectrum)*0.5,'k:',
 
 # Add limits and show
 plt.xlim([0,max(E_electron)])
-plt.ylim([0,1.2])
+# plt.ylim([0,1.2]) #<- Change this if you'd like to control the vertical axis range 
 plt.show()
